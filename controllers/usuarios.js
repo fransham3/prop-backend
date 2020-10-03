@@ -4,6 +4,8 @@ const Usuario = require('../models/usuario');
 const {generarJWT} = require('../helpers/jwt');
 
 const getUsuarios = async(req, res) => {
+    // const desde = req.query.desde;
+    // console.log(desde);
 
     const usuarios = await Usuario.find({}, 'nombre email role');
 
