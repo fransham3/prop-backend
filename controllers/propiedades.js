@@ -61,21 +61,77 @@ const crearPropiedad = async (req, res = response) => {
 
 }
 
-const actualizarPropiedad = (req, res = response) => {
+const actualizarPropiedad = async (req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'actualizarPropiedad'
-    })
+    const id = req.params.id;
+    const uid = req.uid;
+
+    try {
+
+        const propiedad = await Propiedad.findById(id);
+
+        if (!propiedad) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Propiedad no encontrada por ID',
+                id
+            })
+        }
+
+        const cambiosPropiedad = {
+            ...req.body,
+            usuario: uid
+        }
+
+        const propiedadActualizada = await Propiedad.findByIdAndUpdate(id, cambiosPropiedad, {new: true})
+
+        
+        res.json({
+            ok: true,
+            propiedad: propiedadActualizada
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+
 
 }
 
-const borrarPropiedad = (req, res = response) => {
+const borrarPropiedad = async (req, res = response) => {
 
-    res.json({
-        ok: true,
-        msg: 'borrarPropiedad'
-    })
+    const id = req.params.id;
+
+    try {
+
+        const propiedad = await Propiedad.findById(id);
+
+        if (!propiedad) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Propiedad no encontrada por ID',
+                id
+            })
+        }
+
+        await Propiedad.findByIdAndDelete(id);
+        
+        res.json({
+            ok: true,
+            msg: 'Propiedad eliminada'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+    }
 
 }
 

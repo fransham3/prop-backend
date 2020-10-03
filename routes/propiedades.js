@@ -31,11 +31,17 @@ router.post('/',
 
 router.put('/:id', 
     [
-        
+        validarJWT,
+        check('titulo', 'La propiedad debe tener titulo').not().isEmpty(),
+        check('tipo_oper', 'La propiedad debe tener tipo de operación').not().isEmpty(),
+        check('precio', 'La propiedad debe tener precio').not().isEmpty(),
+        check('desc_corta', 'La propiedad debe tener descripción corta').not().isEmpty(),
+        validarCampos
     ], 
     actualizarPropiedad);
 
 router.delete('/:id',
+    validarJWT,
     borrarPropiedad);
 
 
