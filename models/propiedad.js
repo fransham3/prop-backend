@@ -20,7 +20,7 @@ const PropiedadSchema = Schema({
     region: {
         type: String
     },
-    ciudad: {
+    provincia: {
         type: String
     },
     comuna: {
@@ -39,6 +39,11 @@ const PropiedadSchema = Schema({
     },
     img: {
         type: String
+    },
+    created_at: { 
+        type: Date, 
+        required: true, 
+        default: Date.now 
     },
     usuario: {
         required: true,

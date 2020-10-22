@@ -21,13 +21,13 @@ const getPropiedades = async (req, res = response) => {
 
     Propiedad.paginate({},options, function(err, result){
         if(err){
-            return res.status(500).json({mensaje: 'Error al cargar usuarios'});
+            return res.status(500).json({mensaje: 'Error al cargar propiedades'});
         }
 
     res.json({result});
     });
     
-    console.log(req.query.page);
+    // console.log(req.query.page);
 }
 
 
@@ -42,6 +42,7 @@ const crearPropiedad = async (req, res = response) => {
     try {
 
         const propiedadDB = await propiedad.save();
+    
 
 
         res.json({
@@ -84,7 +85,7 @@ const actualizarPropiedad = async (req, res = response) => {
         }
 
         const propiedadActualizada = await Propiedad.findByIdAndUpdate(id, cambiosPropiedad, {new: true})
-
+        
         
         res.json({
             ok: true,
@@ -135,10 +136,21 @@ const borrarPropiedad = async (req, res = response) => {
 
 }
 
+const modalPropiedades = async (req, res = response) => {
+    const id = String (req.params.id);
+    const propsModal = await Propiedad.find({_id: id});
+
+    res.json({
+        ok: true,
+        propsModal
+    });
+}
+
 
 module.exports = {
     getPropiedades,
     crearPropiedad,
     actualizarPropiedad,
-    borrarPropiedad
+    borrarPropiedad,
+    modalPropiedades
 }

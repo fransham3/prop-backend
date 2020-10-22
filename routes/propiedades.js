@@ -11,7 +11,8 @@ const {
     getPropiedades,
     crearPropiedad,
     actualizarPropiedad,
-    borrarPropiedad
+    borrarPropiedad,
+    modalPropiedades
     } = require('../controllers/propiedades');
 
 const router = Router();
@@ -43,6 +44,9 @@ router.put('/:id',
 router.delete('/:id',
     validarJWT,
     borrarPropiedad);
+
+
+router.get('/modal/:id', modalPropiedades);
 
 
 

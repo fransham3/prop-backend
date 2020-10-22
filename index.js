@@ -23,7 +23,8 @@ app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/propiedades', require('./routes/propiedades'));
 app.use('/api/login', require('./routes/auth'));
 app.use('/api/upload', require('./routes/uploads'));
-
+app.use('/api/ubicaciones', require('./routes/ubicaciones'));
+app.use('/api/todo', require('./routes/busquedas'));
 
 
 
