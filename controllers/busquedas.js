@@ -1,4 +1,5 @@
 const {response} = require('express');
+// const { Img } = require('../../Propiedades/propiedades/src/app/models/img.model');
 const Propiedad = require('../models/propiedad');
 
 
@@ -11,6 +12,8 @@ const getBusquedasTotales = async (req, res = response) => {
         limit: 9,
         page: req.query.page
     }
+
+    // const img = Img.findOne({ propiedad_id });
     
     Propiedad.paginate( ({ titulo: regex }),options, function(err, result){
         if(err){
@@ -21,6 +24,8 @@ const getBusquedasTotales = async (req, res = response) => {
     });
 
 }
+
+
 
 
 

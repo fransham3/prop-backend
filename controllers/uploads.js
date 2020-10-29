@@ -1,12 +1,112 @@
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 
 const { response } = require("express");
 const { v4: uuidv4 } = require('uuid');
 const { actualizarImagen } = require('../helpers/actualizar-imagen');
+const Img = require('../models/img');
+const cloudinary = require('cloudinary');
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+const cargarImagen = async (req, res = response) => {
+    const fotos = await Img.find();
+    console.log(fotos);
+    res.json({
+        ok: true,
+        fotos
+    });
+}
+
+
+const cargarImgById = async (req, res = response) => {
+    const id = req.params.id;
+    const fotos = await Img.findById(id);
+    console.log(fotos);
+    res.json({
+        ok: true,
+        fotos
+    });
+}
+
+
+const cargarImgByPropiedad = async (req, res = response) => {
+    const pID = String(req.params.pID);
+    
+   const fotos = await Img.find({propiedad_id: pID});
+
+   res.json({
+        ok: true,
+        fotos
+    });
+    console.log(fotos);
+}
+
+
+const cargarPortada = async (req, res = response) => {
+
+    
+   const fotos = await Img.aggregate.facet(
+       {
+        books: [{ groupBy: propiedad_id }]
+       }
+       );
+
+   res.json({
+        ok: true,
+        fotos
+    });
+
+}
 
 
 
+const subirImagen = async (req, res = response) => {
+
+    try {
+
+        console.log(req.file);
+        const result = await cloudinary.v2.uploader.upload(req.file.path);
+        console.log(result);
+        const newImg = new Img({
+            imageURL: result.url,
+            public_id: result.public_id,
+            propiedad_id: req.params.pID
+        });
+        await newImg.save();
+        await fs.unlink(req.file.path);
+        
+        res.json({
+            ok: true,
+            msg: 'Archivo subido'
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        })
+    }
+}
+
+
+const eliminarImagen = async (req, res = response) => {
+
+    const photo_id = req.params.photo_id;
+    // const { photo_id } = req.params;
+    const img = await Img.findByIdAndDelete(photo_id);
+    console.log(img);
+    const result = await cloudinary.v2.uploader.destroy(img.public_id);
+    console.log(result);
+}
+
+
+
+////////////////////////////////////////////////////////
 
 const fileUpload = (req, res = response) => {
 
@@ -96,5 +196,12 @@ const retornaImagen = (req, res = response) => {
 
 module.exports = {
     fileUpload,
-    retornaImagen
+    retornaImagen,
+    subirImagen,
+    cargarImagen,
+    eliminarImagen,
+    cargarImgById,
+    cargarImgByPropiedad,
+    cargarPortada,
+
 }
