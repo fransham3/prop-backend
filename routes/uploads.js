@@ -27,7 +27,7 @@ router.get('/:id', cargarImgById);
 
 router.get('/ver/:pID', cargarImgByPropiedad);
 
-router.get('/portada/', cargarPortada);
+router.get('/portada/:pID', cargarPortada);
 
 router.post('/add/:pID', subirImagen);
 

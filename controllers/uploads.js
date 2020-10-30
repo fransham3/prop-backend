@@ -48,14 +48,11 @@ const cargarImgByPropiedad = async (req, res = response) => {
 
 const cargarPortada = async (req, res = response) => {
 
+    const pID = String(req.params.pID);
     
-   const fotos = await Img.aggregate.facet(
-       {
-        books: [{ groupBy: propiedad_id }]
-       }
-       );
-
-   res.json({
+    const fotos = await Img.findOne({propiedad_id: pID}).populate('propiedad_id', 'titulo');;
+    console.log(fotos);
+    res.json({
         ok: true,
         fotos
     });
