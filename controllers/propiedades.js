@@ -2,6 +2,8 @@ const {response} = require('express');
 
 const Propiedad = require('../models/propiedad');
 
+
+
 const getPropiedades = async (req, res = response) => {
 
 
@@ -103,6 +105,46 @@ const actualizarPropiedad = async (req, res = response) => {
 
 }
 
+
+
+const actualizarImg = async (req, res = response) => {
+
+    const id = req.params.id;
+    const img  = req.body;
+
+    try {
+
+        const propiedad = await Propiedad.findById(id);
+
+        if (!propiedad) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Propiedad no encontrada por ID',
+                id
+            })
+        }
+
+    
+
+        const propiedadActualizada = await Propiedad.findByIdAndUpdate(id, img, {new: true})
+        
+        
+        res.json({
+            ok: true,
+            propiedad: propiedadActualizada
+        })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+
+
+}
+
 const borrarPropiedad = async (req, res = response) => {
 
     const id = req.params.id;
@@ -146,11 +188,34 @@ const modalPropiedades = async (req, res = response) => {
     });
 }
 
+const recientesPropiedades = async (req, res = response) => {
+    
+    // const recientesProps = await Propiedad.find({});
+    // .sort({'created_at': 'desc'})
+    // .exec(function(err, images) {
+    //     //do stuff with images
+    
+       
+        
+    //  });
+
+    const recientesProps = await Propiedad.find({})
+            .sort({created_at:-1})
+            .limit(9);
+            
+                res.json({
+                    recientesProps
+                });
+             
+}
+
 
 module.exports = {
     getPropiedades,
     crearPropiedad,
     actualizarPropiedad,
     borrarPropiedad,
-    modalPropiedades
+    modalPropiedades,
+    recientesPropiedades,
+    actualizarImg
 }

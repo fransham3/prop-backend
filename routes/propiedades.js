@@ -12,12 +12,17 @@ const {
     crearPropiedad,
     actualizarPropiedad,
     borrarPropiedad,
-    modalPropiedades
+    modalPropiedades,
+    recientesPropiedades,
+    actualizarImg
     } = require('../controllers/propiedades');
 
 const router = Router();
 
 router.get('/', getPropiedades);
+
+router.get('/recientes', recientesPropiedades);
+
 
 router.post('/', 
     [
@@ -40,6 +45,10 @@ router.put('/:id',
         validarCampos
     ], 
     actualizarPropiedad);
+
+
+router.put('/img/:id', actualizarImg);
+
 
 router.delete('/:id',
     validarJWT,

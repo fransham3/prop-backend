@@ -38,6 +38,7 @@ app.use('/api/login', require('./routes/auth'));
 app.use('/api/upload', require('./routes/uploads'));
 app.use('/api/ubicaciones', require('./routes/ubicaciones'));
 app.use('/api/todo', require('./routes/busquedas'));
+app.use('/api/contacto', require('./routes/contacto'));
 
 
 

@@ -35,14 +35,24 @@ const cargarImgById = async (req, res = response) => {
 
 const cargarImgByPropiedad = async (req, res = response) => {
     const pID = String(req.params.pID);
-    
-   const fotos = await Img.find({propiedad_id: pID});
 
-   res.json({
-        ok: true,
-        fotos
-    });
-    console.log(fotos);
+    try {
+        const fotos = await Img.find({propiedad_id: pID});
+     
+        res.json({
+             ok: true,
+             fotos
+         });
+         console.log(fotos);
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    }
+    
 }
 
 

@@ -38,7 +38,8 @@ const PropiedadSchema = Schema({
         required: true
     },
     img: {
-        type: String
+        type: String,
+        default: 'https://res.cloudinary.com/dyraidudw/image/upload/v1604545858/no-image_gdvvkm.jpg'
     },
     created_at: { 
         type: Date, 
